@@ -2,9 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import GameCard from './GameCard'
-import gamesList from '../constants'
-// import { getData } from '../services'
-import firebase from '../firebase'
+import { database } from '../firebase'
 
 
 const useStyles = makeStyles({
@@ -16,26 +14,26 @@ const useStyles = makeStyles({
 const Content = () => {
   const classes = useStyles()
   
-  const [games, setGames] = useState({})
+  const [games, setGames] = useState(null)
 
   useEffect(() => {
-    const gamesRef = firebase.database().ref('games')
+    const gamesRef = database.ref('games')
     gamesRef.on('value', (snapshot) => {
     setGames(snapshot.val())
-  })
+    })
   }, [])
 
-  const  renderGameCards = (games) => {
-    return games.map((game, i) => {
-      const { id, title, price, description, image, vote } = game
+  const  renderGameCards = (gamesObj) => {
+    return Object.keys(gamesObj).map((key) => {
+      const { id, name, price, description, imageUrl, rating } = gamesObj[key]
       return (
-        <Grid id={id} item xs={12} sm={6} md={4} key={Date.now() + i}>
+        <Grid key={id} item xs={12} sm={6} md={4}>
           <GameCard
-            title={title}
+            title={name}
             price={price}
             descr={description}
-            poster={image}
-            vote={vote}
+            url={imageUrl}
+            vote={+rating}
           />
         </Grid>
       )
@@ -44,7 +42,7 @@ const Content = () => {
 
   return (
     <Grid container spacing={2} className={classes.container}>
-      { Object.keys(games).length > 0 ? renderGameCards(gamesList): null}
+      {games ? renderGameCards(games): null}
     </Grid>
   )
 }

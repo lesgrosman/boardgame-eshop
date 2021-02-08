@@ -12,9 +12,6 @@ import ShareIcon from '@material-ui/icons/Share';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
-  root: {
-    border: 'none'
-  },
   media: {
     height: 200,
     width: 200,
@@ -36,10 +33,10 @@ const useStyles = makeStyles({
   }
 });
 
-const GameCard = ({ title, price, descr, poster, vote }) => {
+const GameCard = ({ title, price, descr, url, vote }) => {
   const classes = useStyles(vote);
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card variant="outlined">
       <CardHeader
         classes={{
           title: classes.name
@@ -59,7 +56,7 @@ const GameCard = ({ title, price, descr, poster, vote }) => {
       />
       <CardMedia
         className={classes.media}
-        image={poster}
+        image={url}
         title={title}
       />
       <CardContent>

@@ -33,10 +33,9 @@ const AddFormPage = () => {
   const history = useHistory()
 
   const onSubmit = (data, e) => {
-    const {title, price, rating, description} = data
+    const {title, price, rating, description, files} = data
     e.target.reset()
-
-    pushData(title, price, rating, description)
+    pushData(title, price, rating, description, files[files.length - 1])
     history.push('/')
   }
 
