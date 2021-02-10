@@ -1,4 +1,6 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeGame } from '../store/actions'
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button';
@@ -7,6 +9,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader'
 import CardMedia from '@material-ui/core/CardMedia'
+import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton'
 import ShareIcon from '@material-ui/icons/Share';
 import Typography from '@material-ui/core/Typography';
@@ -30,11 +33,17 @@ const useStyles = makeStyles({
   },
   voteStyle: {
     backgroundColor: vote => vote < 5 ? 'red': vote > 6 ? 'green': 'grey'
+  },
+  delete: {
+    color: 'red'
   }
 });
 
-const GameCard = ({ title, price, descr, url, vote }) => {
+const GameCard = ({id, title, price, descr, url, vote }) => {
   const classes = useStyles(vote);
+  const removeMode = useSelector(state => state.removeMode)
+  const dispatch = useDispatch()
+
   return (
     <Card variant="outlined">
       <CardHeader
@@ -47,9 +56,13 @@ const GameCard = ({ title, price, descr, url, vote }) => {
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
-            <ShareIcon />
-          </IconButton>
+          removeMode
+          ? <IconButton aria-label="settings" onClick={() => dispatch(removeGame(title, id))}>
+              <DeleteIcon color="error"/>
+            </IconButton> 
+          : <IconButton aria-label="settings" >
+              <ShareIcon />
+            </IconButton>
         }
         title={title}
         subheader={`$ ${price}`}

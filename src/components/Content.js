@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useSelector } from 'react-redux'
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import GameCard from './GameCard'
@@ -13,7 +14,6 @@ const useStyles = makeStyles({
 
 const Content = () => {
   const classes = useStyles()
-  
   const [games, setGames] = useState(null)
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const Content = () => {
             descr={description}
             url={imageUrl}
             vote={+rating}
+            id={id}
           />
         </Grid>
       )

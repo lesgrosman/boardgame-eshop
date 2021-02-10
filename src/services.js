@@ -1,15 +1,17 @@
 import { database, storage } from './firebase'
 
 export const pushData = (title, price, rating, description, image) => {
-  const storageRef = storage.ref()
-  const imageRef = storageRef.child(`games/${image.name}`)
-  
   const dbRef = database.ref()
   const gamesRef = dbRef.child(`games/${title}`)
 
+  const id = gamesRef.push().key
+
+  const storageRef = storage.ref()
+  const imageRef = storageRef.child(`games/${id}`)
+
   imageRef.put(image)
   .then(() => {
-    storageRef.child(`games/${image.name}`).getDownloadURL()
+    storageRef.child(`games/${id}`).getDownloadURL()
     .then(url => {
       gamesRef.set({
         name: title,
@@ -17,8 +19,10 @@ export const pushData = (title, price, rating, description, image) => {
         rating: rating,
         description: description,
         imageUrl: url,
-        id: gamesRef.push().key
+        id: id,
       })
     })
   })
 }
+
+

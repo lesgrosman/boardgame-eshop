@@ -1,6 +1,8 @@
 import React, {useContext} from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { AuthContext } from '../components/auth/AuthContext'
 import { app } from '../firebase'
+import { removeModeToggle } from '../store/actions'
 import { AppBar, Toolbar } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import { Link } from 'react-router-dom'
@@ -13,20 +15,40 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {
     display: 'flex'
+  },
+  touched: {
+    backgroundColor: removeMode => removeMode ? '#0B317C' : '#3f51b5'
   }
 }))
 
 const Header = () => {
-  const classes = useStyles()
   const {currentUser} = useContext(AuthContext)
+  const removeMode = useSelector(state => state.removeMode)
+  const dispatch = useDispatch()
+  const classes = useStyles(removeMode)
 
   const setButtons = () => {
     if (currentUser) {
       return (
         <>
+          <Button color="inherit" component={Link} to="/add">Add game</Button>
           <Button 
-          color="inherit" component={Link} to="/add">Add boardgame</Button>
-          <Button color="inherit" component={Link} to="/" onClick={() => app.auth().signOut()}>Log out</Button>
+            color="inherit" 
+            className={classes.touched} 
+            component={Link} 
+            to="/" 
+            onClick={() => dispatch(removeModeToggle())}
+          >
+            Delete game
+          </Button>
+          <Button 
+            color="inherit" 
+            component={Link} 
+            to="/" 
+            onClick={() => app.auth().signOut()}
+            >
+              Log out
+            </Button>
         </>
       )
     }
