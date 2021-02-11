@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import GameCard from './GameCard'
-import { database } from '../firebase'
-
+import { getData } from '../store/actions'
+import { sortByRating } from '../sorting/sortFramework'
 
 const useStyles = makeStyles({
   container: {
@@ -14,17 +14,19 @@ const useStyles = makeStyles({
 
 const Content = () => {
   const classes = useStyles()
-  const [games, setGames] = useState(null)
+  const games = useSelector(state => state.games)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const gamesRef = database.ref('games')
-    gamesRef.on('value', (snapshot) => {
-    setGames(snapshot.val())
-    })
+    let isCancelled = false
+    dispatch(getData(isCancelled))
+    return () => {
+      isCancelled = true
+    }
   }, [])
-
+  
   const  renderGameCards = (gamesObj) => {
-    return Object.keys(gamesObj).map((key) => {
+    return sortByRating(Object.keys(gamesObj), gamesObj).map((key) => {
       const { id, name, price, description, imageUrl, rating } = gamesObj[key]
       return (
         <Grid key={id} item xs={12} sm={6} md={4}>

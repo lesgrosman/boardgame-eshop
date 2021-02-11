@@ -18,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
   },
   touched: {
     backgroundColor: removeMode => removeMode ? '#0B317C' : '#3f51b5'
+  },
+  title: {
+    fontWeight: 'bold',
+    fontSize: '20px'
   }
 }))
 
@@ -63,7 +67,7 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Toolbar className={classes.typographyStyles}>
-        <Button color="inherit" component={Link} to={'/'}>Main Page</Button>
+        <Button className={classes.title} color="inherit" component={Link} to={'/'}>E-shop</Button>
         <div className={classes.buttons}>
           {setButtons()}
         </div>

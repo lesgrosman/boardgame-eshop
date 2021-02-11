@@ -1,6 +1,6 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { removeGame } from '../store/actions'
+import { useSelector } from 'react-redux'
+import { removeGame } from '../services'
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button';
@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     fontWeight: 'bold'
   },
   voteStyle: {
-    backgroundColor: vote => vote < 5 ? 'red': vote > 6 ? 'green': 'grey'
+    backgroundColor: vote => vote < 5 ? 'red': vote > 7 ? 'green': 'grey'
   },
   delete: {
     color: 'red'
@@ -42,7 +42,6 @@ const useStyles = makeStyles({
 const GameCard = ({id, title, price, descr, url, vote }) => {
   const classes = useStyles(vote);
   const removeMode = useSelector(state => state.removeMode)
-  const dispatch = useDispatch()
 
   return (
     <Card variant="outlined">
@@ -57,7 +56,7 @@ const GameCard = ({id, title, price, descr, url, vote }) => {
         }
         action={
           removeMode
-          ? <IconButton aria-label="settings" onClick={() => dispatch(removeGame(title, id))}>
+          ? <IconButton aria-label="settings" onClick={() => removeGame(title, id)}>
               <DeleteIcon color="error"/>
             </IconButton> 
           : <IconButton aria-label="settings" >

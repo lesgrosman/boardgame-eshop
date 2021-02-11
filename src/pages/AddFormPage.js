@@ -8,7 +8,7 @@ import { useHistory } from 'react-router-dom'
 import FileInput from '../components/formComponents/FileInput'
 import Input from '../components/formComponents/Input'
 import SubmitBtn from '../components/formComponents/SubmitBtn'
-import { pushData } from '../services'
+import { addGame } from '../services'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,7 +35,7 @@ const AddFormPage = () => {
   const onSubmit = (data, e) => {
     const {title, price, rating, description, files} = data
     e.target.reset()
-    pushData(title, price, rating, description, files[files.length - 1])
+    addGame(title, price, rating, description, files[files.length - 1])
     history.push('/')
   }
 

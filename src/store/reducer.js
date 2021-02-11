@@ -1,5 +1,6 @@
 const initialState = {
-  removeMode: false
+  removeMode: false,
+  games: null
 }
 
 const reducer = (state=initialState, action) => {
@@ -9,10 +10,10 @@ const reducer = (state=initialState, action) => {
         ...state,
         removeMode: !state.removeMode
       }
-    case 'REMOVE_MODE_OFF':
+    case 'SET_DATA':
       return {
         ...state,
-        removeMode: !state.removeMode
+        games: action.games
       }
     default:
       return state

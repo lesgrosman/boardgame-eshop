@@ -1,6 +1,6 @@
 import { database, storage } from './firebase'
 
-export const pushData = (title, price, rating, description, image) => {
+export const addGame = (title, price, rating, description, image) => {
   const dbRef = database.ref()
   const gamesRef = dbRef.child(`games/${title}`)
 
@@ -23,6 +23,15 @@ export const pushData = (title, price, rating, description, image) => {
       })
     })
   })
+}
+
+export const removeGame = (title, id) => {
+  const gameRef = database.ref(`games/${title}`)
+  gameRef.remove()
+
+  const picRef = storage.ref().child(`games/${id}`)
+  picRef.delete()
+  
 }
 
 

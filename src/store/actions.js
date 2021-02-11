@@ -1,15 +1,22 @@
-import { storage, database } from '../firebase'
+import { database } from '../firebase'
 
-export const removeGame = (title, id) => {
-  return () => {
-    const gameRef = database.ref(`games/${title}`)
-    gameRef.remove()
-  
-    const picRef = storage.ref().child(`games/${id}`)
-    picRef.delete()
-  }
+export const getData = (isCancelled) => {
+  return dispatch => {
+    const gamesRef = database.ref('games')
+    gamesRef.on('value', (snapshot) => {
+      if (!isCancelled) {
+        dispatch(setData(snapshot.val()))
+      }
+    })
+  }  
 }
 
+export const setData = (games) => {
+  return {
+    type: 'SET_DATA',
+    games
+  }
+}
 
 export const removeModeToggle = () => {
   return {
